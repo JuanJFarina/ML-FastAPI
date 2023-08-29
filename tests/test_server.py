@@ -9,7 +9,7 @@ def test_sentiment_analysis() -> None:
 
 def test_text_translation() -> None:
     textotrans = GoogleTranslator(source='auto', target='es').translate(text="My name is Juan")
-    assert textotrans == "Mi nombre es Juan"
+    assert textotrans == "Mi nombre es Juan Jose"
 
 def test_analysis_spanish() -> None:
     textotrans = GoogleTranslator(source='auto', target='en').translate(text="Me encantó !")
