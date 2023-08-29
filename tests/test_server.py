@@ -8,7 +8,7 @@ def test_sentiment_analysis() -> None:
     assert sentiment == "positivo"
 
 def test_text_translation() -> None:
-    textotrans = GoogleTranslator(source='auto', target='es').translate(text="My name is Juan")
+    textotrans = GoogleTranslator(source='auto', target='es').translate(text="My name is Juan Jose")
     assert textotrans == "Mi nombre es Juan Jose"
 
 def test_analysis_spanish() -> None:
