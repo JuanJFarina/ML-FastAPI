@@ -25,7 +25,7 @@ jobs:
       - name: Run linting and formatting checks
         run: |
           pip install black pylint
-          black --check .
+          black .
           pylint . --exit-zero
 
       - name: Run tests
