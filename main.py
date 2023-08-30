@@ -41,7 +41,7 @@ api_keys = {
     "adminkey456": "admin"
 }
 
-def api_key_query(api_key: str = None):
+def api_key_query(api_key: str = ''):
     if api_key:
         return api_key
     else:
