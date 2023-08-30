@@ -8,6 +8,7 @@ This API lets you translate any text of any language to spanish as well as detec
 - The API exposes a Swagger documentation carefully explained
 - Both prior features are publicly accessible at a Vercel Domain
 - The project uses a CI/CD pipeline with Github Actions that run Formatting and Linter with Black and Pylint, Unit tests with Pytest, and also Type Checking with MyPy
+- Connection to a MongoDB database for persistance of analysis history
 - The API endpoints are protected using API Key Authentication
 - Text Language Detection using LangDetect library.
 - Text translation from any language to Spanish using the Deep Translator library.
