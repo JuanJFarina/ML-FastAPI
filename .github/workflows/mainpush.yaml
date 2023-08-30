@@ -15,16 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Merge to main
-        uses: actions/github-script@v5
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
         with:
-          github-token: ${{ secrets.REPO_TOKEN }}
-          script: |
-            const pr = await github.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'Merge dev to main',
-              head: 'dev',  # Replace with the name of your dev branch
-              base: 'main'
-            });
-            core.setOutput('pull_request_number', pr.data.number);
+          token: ${{ secrets.REPO_TOKEN }}
+          commit-message: Automated Pull Request
+          title: 'Merge dev to main'
+          body: 'This pull request is automatically generated.'
+          branch: dev
+          base: main
