@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import MongoClient
 from textblob import TextBlob
 from langdetect import detect
 from deep_translator import GoogleTranslator
@@ -31,7 +31,7 @@ app.add_middleware(
 
 MONGO_URI = "mongodb+srv://vercel-admin-user:nBXBL5H34RrmHSEk@cluster0.gxpghrm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-client = AsyncIOMotorClient(MONGO_URI)
+client = MongoClient(MONGO_URI)
 db = client["myFirstDatabase"]
 
 class AnalyzeRequest(BaseModel):
@@ -58,7 +58,7 @@ def get_api_key(api_key: str = Depends(api_key_query)):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
 @app.get("/")
-async def read_root(api_key: str = Depends(get_api_key)):
+def read_root(api_key: str = Depends(get_api_key)):
     """
     Retrieve all saved sentiment analysis results.
 
@@ -83,7 +83,7 @@ async def read_root(api_key: str = Depends(get_api_key)):
     """
     try:
         results = []
-        async for document in db.analisis.find():
+        for document in db.analisis.find():
             results.append({
                 "text": document["text"],
                 "sentimiento": document["sentimiento"],
@@ -95,7 +95,7 @@ async def read_root(api_key: str = Depends(get_api_key)):
 
 
 @app.post("/analyze")
-async def analyze_sentiment(
+def analyze_sentiment(
     analyze_request: AnalyzeRequest,
     api_key: str = Depends(get_api_key)
 ):
@@ -130,7 +130,7 @@ async def analyze_sentiment(
         
         sentiment = "positivo" if polarity > 0 else "negativo" if polarity < 0 else "neutral"
 
-        result = await db.analisis.insert_one({
+        result = db.analisis.insert_one({
             "text": analyze_request.texto,
             "sentimiento": sentiment,
             "polaridad": polarity
