@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
 from textblob import TextBlob
 from langdetect import detect
 from deep_translator import GoogleTranslator
@@ -28,6 +29,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+MONGO_URI = "mongodb+srv://vercel-admin-user:nBXBL5H34RrmHSEk@cluster0.gxpghrm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+client = AsyncIOMotorClient(MONGO_URI)
+db = client["myFirstDatabase"]
+
 class AnalyzeRequest(BaseModel):
     texto: str
 
@@ -52,26 +58,44 @@ def get_api_key(api_key: str = Depends(api_key_query)):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
 @app.get("/")
-def read_root():
+async def read_root(api_key: str = Depends(get_api_key)):
     """
-    Simple API usage message.
+    Retrieve all saved sentiment analysis results.
 
-    Example:
+    Returns:
+        list: List of sentiment analysis results.
+        
+        Example:
 
-    {
-        "mensaje": "text",
-        "analizar": "text",
-        "traducir": "text"
-    }
+        [
+            {
+                "text": "Hello world!",
+                "sentimiento": "neutral",
+                "polaridad": 0.0
+            },
+            {
+                "text": "I love this!",
+                "sentimiento": "positivo",
+                "polaridad": 0.875
+            },
+            ...
+        ]
     """
-    return {
-        "mensaje": "API de traducción al español y análisis de sentimiento de textos en cualquier idioma",
-        "analizar": "Usar /analyze?texto para recibir una respuesta positiva, negativa o neutral sobre el sentimiento del autor, sin importar el idioma",
-        "traducir": "Usar /translate?texto para recibir una respuesta traducida al español"
-    }
+    try:
+        results = []
+        async for document in db.analisis.find():
+            results.append({
+                "text": document["text"],
+                "sentimiento": document["sentimiento"],
+                "polaridad": document["polaridad"]
+            })
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/analyze")
-def analyze_sentiment(
+async def analyze_sentiment(
     analyze_request: AnalyzeRequest,
     api_key: str = Depends(get_api_key)
 ):
@@ -105,6 +129,12 @@ def analyze_sentiment(
         polarity = blob.sentiment.polarity
         
         sentiment = "positivo" if polarity > 0 else "negativo" if polarity < 0 else "neutral"
+
+        result = await db.analisis.insert_one({
+            "text": analyze_request.texto,
+            "sentimiento": sentiment,
+            "polaridad": polarity
+        })
         
         return {"sentimiento": sentiment, "polaridad": polarity}
     except Exception as e:
