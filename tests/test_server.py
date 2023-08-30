@@ -1,5 +1,6 @@
 from textblob import TextBlob
 from deep_translator import GoogleTranslator
+from langdetect import detect
 
 def test_sentiment_analysis() -> None:
     blob = TextBlob("I loved it")
@@ -31,3 +32,7 @@ def test_analysis_italian() -> None:
     polarity = blob.sentiment.polarity
     sentiment = "positivo" if polarity > 0 else "negativo" if polarity < 0 else "neutral"
     assert sentiment == "negativo"
+
+def test_lang_detect() -> None:
+    result = detect("Esto es español")
+    assert result == "es"

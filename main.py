@@ -6,8 +6,6 @@ from deep_translator import GoogleTranslator
 from pydantic import BaseModel
 
 description = """
-Welcome to the Translation and Sentiment Analysis API!
-
 This API allows you to translate text from any language to Spanish and also analyze sentiment in any language, so you can know if a comment is either positive, neutral or negative.
 
 For using our services endpoints you'll have to provide your API KEY as a query parameter, in this manner:
@@ -19,7 +17,7 @@ POST /analyze?api_key=apikey
 app = FastAPI(
     title="Challenge App",
     description=description,
-    summary="Translation and Sentiment Analysis App"
+    summary="Translation and Sentiment Analysis API"
 )
 
 app.add_middleware(
@@ -128,10 +126,11 @@ def translate_text(
         }
 
     Returns:
-        dict: The translated text.
+        dict: The translated text plus the detected original language.
 
         {
-            "traducción": "Hola ! Cómo estás ?"
+            "traduccion": "Hola ! Cómo estás ?"
+            "idioma_original": "en"
         }
     """
     try:
