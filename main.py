@@ -134,10 +134,13 @@ def translate_text(
         }
     """
     try:
+        blob = TextBlob(translate_request.texto)
+        origLang = blob.detect_language()
         textotrans = GoogleTranslator(source='auto', target='es').translate(text=translate_request.texto)
 
         return {
-            "traducción": textotrans
+            "traduccion": textotrans,
+            "idioma_original": origLang
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
