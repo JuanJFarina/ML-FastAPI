@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from textblob import TextBlob
+from langdetect import detect
 from deep_translator import GoogleTranslator
 from pydantic import BaseModel
 
@@ -134,8 +135,7 @@ def translate_text(
         }
     """
     try:
-        blob = TextBlob(translate_request.texto)
-        origLang = blob.detect_language()
+        origLang = detect(translate_request.texto)
         textotrans = GoogleTranslator(source='auto', target='es').translate(text=translate_request.texto)
 
         return {
