@@ -18,7 +18,7 @@ docutils==0.20.1
 fastapi==0.103.0
 filelock==3.12.3
 googletrans==3.0.0
-h11==0.14.0
+h11
 h2==3.2.0
 hpack==3.0.0
 hstspreload==2023.1.1
