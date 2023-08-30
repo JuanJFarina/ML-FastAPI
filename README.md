@@ -16,7 +16,7 @@ This API lets you translate any text of any language to spanish as well as detec
 
 ## Demo
 
-A use case demonstration is hosted at https://ml-fast-api-c7ef.vercel.app/ where you can see a simple feedback message so users can leave a comment about the service/app, etc., the message can be in any language and the response will vay according to the message's sentiment.
+A use case demonstration is hosted at https://ml-fast-api-c7ef.vercel.app/ where you can see a simple feedback message so users can leave a comment about the service/app, etc., the message can be in any language and the response will vary according to the message's sentiment.
 
 ## Usage
 
