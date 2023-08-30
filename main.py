@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
+from pymongo.database import Database
 from textblob import TextBlob
 from langdetect import detect
 from deep_translator import GoogleTranslator
@@ -31,8 +32,8 @@ app.add_middleware(
 
 MONGO_URI = "mongodb+srv://vercel-admin-user:nBXBL5H34RrmHSEk@cluster0.gxpghrm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
-client = MongoClient(MONGO_URI)
-db = client["myFirstDatabase"]
+client: MongoClient = MongoClient(MONGO_URI)
+db: Database = client["myFirstDatabase"]
 
 class AnalyzeRequest(BaseModel):
     texto: str
