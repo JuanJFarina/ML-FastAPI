@@ -3,7 +3,17 @@ from textblob import TextBlob
 from deep_translator import GoogleTranslator
 from pydantic import BaseModel
 
-app = FastAPI()
+description = """
+Welcome to the Translation and Sentiment Analysis API!
+
+This API allows you to translate text from any language to Spanish and also analyze sentiment in any language, so you can know if a comment is either positive, neutral or negative.
+"""
+
+app = FastAPI(
+    title="Challenge App",
+    description=description,
+    summary="Translation and Sentiment Analysis App"
+)
 
 class AnalyzeRequest(BaseModel):
     texto: str
@@ -14,9 +24,15 @@ class TranslateRequest(BaseModel):
 @app.get("/")
 def read_root():
     """
-    Welcome to the Translation and Sentiment Analysis API!
+    Simple API usage message.
 
-    This API allows you to translate text to Spanish and analyze sentiment in any language.
+    Returns:
+
+    {
+        "mensaje": "text",
+        "analizar": "text",
+        "traducir": "text"
+    }
     """
     return {
         "mensaje": "API de traducción al español y análisis de sentimiento de textos en cualquier idioma",
@@ -32,8 +48,21 @@ def analyze_sentiment(analyze_request: AnalyzeRequest):
     Args:
         analyze_request (AnalyzeRequest): The request containing the text to analyze.
 
+        Example:
+
+        {
+            "texto": "Me encantó !"
+        }
+
     Returns:
         dict: The sentiment analysis result.
+
+        Example:
+
+        {
+            "sentimiento": "positivo",
+            "polaridad": 0.875
+        }
     """
     try:
         textotrans = GoogleTranslator(source='auto', target='en').translate(text=analyze_request.texto)
@@ -56,8 +85,16 @@ def translate_text(translate_request: TranslateRequest):
     Args:
         translate_request (TranslateRequest): The request containing the text to translate.
 
+        {
+            "texto": "Hello ! How are you ?"
+        }
+
     Returns:
         dict: The translated text.
+
+        {
+            "traducción": "Hola ! Cómo estás ?"
+        }
     """
     try:
         textotrans = GoogleTranslator(source='auto', target='es').translate(text=translate_request.texto)
