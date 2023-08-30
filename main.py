@@ -26,7 +26,7 @@ def read_root():
     """
     Simple API usage message.
 
-    Returns:
+    Example:
 
     {
         "mensaje": "text",
