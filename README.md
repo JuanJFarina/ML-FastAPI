@@ -2,6 +2,10 @@
 
 This API lets you translate any text of any language to spanish as well as detecting the original language automatically and also analyze its sentiment to see if it's a positive, negative or neutral message.
 
+## Demo
+
+A use case demonstration is hosted at https://ml-fast-api-c7ef.vercel.app/ where you can see a simple feedback message so users can leave a comment about the service/app, etc., the message can be in any language and the response will vay according to the message's sentiment.
+
 ## Usage
 
 You can use our API in your app calling the Vercel deployment at https://ml-fast-api.vercel.app/ and using this API Key: key123
