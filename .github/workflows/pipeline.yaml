@@ -1,4 +1,4 @@
-name: Tests
+name: Linting, Testing and Type Checking Pipeline
 
 on:
   push:
@@ -32,4 +32,4 @@ jobs:
         run: pytest
         
       - name: Run type checking
-        run: mypy .
+        run: mypy . --ignore-missing-imports
