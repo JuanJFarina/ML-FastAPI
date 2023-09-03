@@ -14,6 +14,8 @@ For using our services endpoints you'll have to provide your API KEY as a query 
 
 POST /analyze?api_key=apikey
 
+You can also find a Demo Client at "https://ml-fast-api-c7ef.vercel.app/" where you can test this API's real world value.
+
 """
 
 app = FastAPI(
